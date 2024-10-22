@@ -1,0 +1,21 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "asynctd"
+version = "1.0"
+description = "Async Task Distributor"
+authors = ["Andrew Samoylov <andrewsdaily@gmail.com>"]
+packages = [
+  { from = "src", include = "asynctd" },
+]
+
+[tool.poetry.dependencies]
+python = ">=3.11"
+pylint = "^3.2.5"
+asyncio = ">=3.4.3"
+
+[tool.poetry.dev-dependencies]
+
+[tool.poetry.scripts]

@@ -1,0 +1,46 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          path: asynctd
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.ACTIONS_SSH_KEY }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Core Utilities
+        run: sudo apt-get update && sudo apt-get install -y coreutils tree
+
+      - name: Verify Shell Environment
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "make --version"
+          make --version
+          echo "uname -m"
+          uname -m
+
+      - name: Check
+        working-directory: asynctd
+        run: make check
