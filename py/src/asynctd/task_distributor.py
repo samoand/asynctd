@@ -178,9 +178,12 @@ def run_distributively(
                 result['ex'] for result in results if result['ex']
             ]
             result_data = None if result_reducer is None \
-                else result_reducer(
+                else (await result_reducer(
                 [result['result'] for result in results
-                 if result['result']])
+                 if result['result']]) if asyncio.iscoroutinefunction(
+                         result_reducer) else result_reducer(
+                [result['result'] for result in results
+                 if result['result']]))
 
             # Handle success policies
             if success_policy == SuccessPolicy.SUPER_LAX:
